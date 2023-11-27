@@ -1,11 +1,15 @@
 {
     "access_token": "YOUR_GITHUB_ACCESS_TOKEN",
-    "owner": "yunkon-kim",
+    "owner": "org or username",
     "repositories": [
         "repo1",
         "repo2",
         "repo3"
     ],
-    "tag_name": "v1.0.0",
-    "release_name": "Release Title"
+    "tag_name": "v0.0.1",
+    "previous_tag_name": "v0.0.0",
+    "tartget_commitish": "main",
+    "release_name": "Release Title or v0.0.1",
+    "draft": false,
+    "prerelease": false
 }
