@@ -8,7 +8,7 @@
     ],
     "tag_name": "v0.0.1",
     "previous_tag_name": "v0.0.0",
-    "tartget_commitish": "main",
+    "target_commitish": "main",
     "release_name": "Release Title or v0.0.1",
     "draft": false,
     "prerelease": false

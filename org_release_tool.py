@@ -114,7 +114,7 @@ def main():
     release_name = config["release_name"]
     draft = config["draft"]
     prerelease = config["prerelease"]
-    target_commitish = config["target_commitish"]  # Newly added part
+    target_commitish = config["target_commitish"]
 
     for repo in repositories:
         # Generate release notes
