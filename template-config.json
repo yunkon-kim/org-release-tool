@@ -1,0 +1,11 @@
+{
+    "access_token": "YOUR_GITHUB_ACCESS_TOKEN",
+    "owner": "yunkon-kim",
+    "repositories": [
+        "repo1",
+        "repo2",
+        "repo3"
+    ],
+    "tag_name": "v1.0.0",
+    "release_name": "Release Title"
+}
