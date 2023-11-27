@@ -3,7 +3,60 @@ import json
 import requests
 
 
-def generate_release_notes(
+def create_release(
+    access_token,
+    owner,
+    repo,
+    tag_name,
+    target_commitish,
+    release_name,
+    draft,
+    prerelease,
+    generate_release_notes,
+):
+    """
+    Create a release using the GitHub API.
+
+    Parameters:
+        access_token (str): GitHub Access Token
+        owner (str): Repository owner
+        repo (str): Repository name
+        tag_name (str): Tag name for the release
+        target_commitish (str): Target commitish for the release
+        release_name (str): Release name
+        release_notes (str): Release notes content
+        draft (bool): Whether the release is a draft
+        prerelease (bool): Whether the release is a prerelease
+
+    Returns:
+        None
+    """
+    url = f"https://api.github.com/repos/{owner}/{repo}/releases"
+
+    headers = {
+        "Authorization": f"token {access_token}",
+        "Content-Type": "application/json",
+    }
+
+    data = {
+        "tag_name": tag_name,
+        "target_commitish": target_commitish,
+        "name": release_name,
+        "draft": draft,
+        "prerelease": prerelease,
+        "generate_release_notes": generate_release_notes,
+    }
+
+    response = requests.post(url, headers=headers, json=data, timeout=10)
+
+    if response.status_code == 201:
+        print(f"Release successfully created for {repo}.")
+    else:
+        print(f"Failed to create release for {repo}: {response.status_code}")
+        print(response.text)
+
+
+def generate_release_notes_content(
     access_token, owner, repo, tag_name, target_commitish, previous_tag_name
 ):
     """
@@ -48,7 +101,7 @@ def generate_release_notes(
         return ""
 
 
-def create_release(
+def create_release_with_custom_notes(
     access_token,
     owner,
     repo,
@@ -97,8 +150,9 @@ def create_release(
     if response.status_code == 201:
         print(f"Release successfully created for {repo}.")
     else:
-        print(f"Failed to create release for {repo}: {response.status_code}")
-        print(response.text)
+        status_code = response.status_code
+        text = response.text
+        print(f"Failed to create release for {repo}: {status_code}, {text}")
 
 
 def main():
@@ -110,36 +164,49 @@ def main():
     owner = config["owner"]
     repositories = config["repositories"]
     tag_name = config["tag_name"]
-    previous_tag_name = config["previous_tag_name"]
+    # previous_tag_name = config["previous_tag_name"]
+    target_commitish = config["target_commitish"]
     release_name = config["release_name"]
     draft = config["draft"]
     prerelease = config["prerelease"]
-    target_commitish = config["target_commitish"]
+    generate_release_notes = config["generate_release_notes"]
 
     for repo in repositories:
-        # Generate release notes
-        release_notes = generate_release_notes(
+        create_release(
             access_token,
             owner,
             repo,
             tag_name,
             target_commitish,
-            previous_tag_name,
+            release_name,
+            draft,
+            prerelease,
+            generate_release_notes,
         )
 
-        if release_notes:
-            # Create the release with the generated notes
-            create_release(
-                access_token,
-                owner,
-                repo,
-                tag_name,
-                target_commitish,
-                release_name,
-                release_notes,
-                draft,
-                prerelease,
-            )
+        # # Generate release notes
+        # release_notes = generate_release_notes_content(
+        #     access_token,
+        #     owner,
+        #     repo,
+        #     tag_name,
+        #     target_commitish,
+        #     previous_tag_name,
+        # )
+
+        # if release_notes:
+        #     # Create the release with the generated notes
+        #     create_release_with_custom_notes(
+        #         access_token,
+        #         owner,
+        #         repo,
+        #         tag_name,
+        #         target_commitish,
+        #         release_name,
+        #         release_notes,
+        #         draft,
+        #         prerelease,
+        #     )
 
 
 if __name__ == "__main__":
