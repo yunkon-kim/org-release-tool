@@ -50,7 +50,7 @@ def create_release(
     response = requests.post(url, headers=headers, json=data, timeout=10)
 
     if response.status_code == 201:
-        print(f"Release successfully created for {repo}.")
+        print(f"{tag_name} release has beend created successfully for {repo}.")
     else:
         print(f"Failed to create release for {repo}: {response.status_code}")
         print(response.text)
